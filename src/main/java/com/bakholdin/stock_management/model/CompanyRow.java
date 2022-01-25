@@ -2,8 +2,10 @@ package com.bakholdin.stock_management.model;
 
 import com.bakholdin.stock_management.model.csv_converters.CsvZacksColumn;
 import com.bakholdin.stock_management.model.csv_converters.CsvZacksDouble;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
@@ -18,8 +20,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "companies")
 public class CompanyRow implements Serializable {
     @Id

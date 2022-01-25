@@ -3,8 +3,10 @@ package com.bakholdin.stock_management.model;
 import com.bakholdin.stock_management.model.csv_converters.CsvZacksColumn;
 import com.bakholdin.stock_management.model.csv_converters.CsvZacksDouble;
 import com.univocity.parsers.annotations.Nested;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
@@ -18,7 +20,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "zacks")
 public class ZacksRow {
