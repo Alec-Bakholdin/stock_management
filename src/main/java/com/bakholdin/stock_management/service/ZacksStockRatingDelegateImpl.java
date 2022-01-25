@@ -1,7 +1,10 @@
 package com.bakholdin.stock_management.service;
 
 import com.bakholdin.stock_management.config.ApplicationProperties;
+import com.bakholdin.stock_management.model.CompanyRow;
 import com.bakholdin.stock_management.model.ZacksRow;
+import com.bakholdin.stock_management.repository.CompanyRepository;
+import com.bakholdin.stock_management.repository.ZacksRepository;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -18,19 +21,33 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ZacksStockRatingDelegateImpl implements StockRatingDelegate<ZacksRow> {
     private final RestTemplate restTemplate;
     private final ApplicationProperties applicationProperties;
+    private final CompanyRepository companyRepository;
+    private final ZacksRepository zacksRepository;
 
     @Override
     public List<ZacksRow> fetchRows() {
         String zacksCsvString = fetchCsvAsString();
         return parseCsvString(zacksCsvString);
+    }
+
+    @Override
+    public void saveRows(Collection<ZacksRow> zacksRows) {
+        Set<CompanyRow> companyRows = zacksRows.stream()
+                .map(row -> row.getId().getCompanyRow())
+                .collect(Collectors.toSet());
+        companyRepository.saveAll(companyRows);
+        zacksRepository.saveAll(zacksRows);
     }
 
     private List<ZacksRow> parseCsvString(String csvStr) {

@@ -22,5 +22,6 @@ public class ScheduledTest {
         for(var row : rows) {
             log.info(row);
         }
+        zacksStockRatingDelegate.saveRows(rows);
     }
 }

@@ -2,11 +2,16 @@ package com.bakholdin.stock_management.service;
 
 import com.bakholdin.stock_management.config.ApplicationProperties;
 import com.bakholdin.stock_management.config.ZacksProperties;
+import com.bakholdin.stock_management.model.CompanyRow;
+import com.bakholdin.stock_management.model.StockManagementRowId;
 import com.bakholdin.stock_management.model.ZacksRow;
+import com.bakholdin.stock_management.repository.CompanyRepository;
+import com.bakholdin.stock_management.repository.ZacksRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -19,8 +24,11 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,7 +37,7 @@ class ZacksStockRatingDelegateImplTest {
     private static final String HOLDINGS_URL = "holdings_url";
     private static final MultiValueMap<String, String> EMPTY_MAP = new LinkedMultiValueMap<>();
     private static final String CSV_HEADERS = "Symbol,Company,Price,Shares,$Chg,%Chg,Industry Rank,Zacks Rank,Value Score,Growth Score,Momentum Score,VGM Score";
-    private static final String CSV_FULL_ROW = "\"AA\",\"Alcoa\",\"5,823.02\",\"0\",\"1.81\",\"3.22\",\"38\",\"3\",\"A\",\"A\",\"A\",\"A\"";
+    private static final String CSV_FULL_ROW = "\"AA\",\"Alcoa\",\"5,823.02\",\"0\",\"1.81\",\"3.22\",\"38\",\"3\",\"A\",\"B\",\"C\",\"D\"";
     private static final String CSV_NULL_ROW =  "\"ARKQ\",\"NA\",\"NA\",\"NA\",\"NA\",\"NA\",\"NA\",\"NA\",\"NA\",\"NA\",\"NA\",\"NA\"";
 
     @InjectMocks
@@ -42,6 +50,11 @@ class ZacksStockRatingDelegateImplTest {
     private ApplicationProperties applicationProperties;
     @Mock
     private ZacksProperties zacksProperties;
+
+    @Mock
+    private CompanyRepository companyRepository;
+    @Mock
+    private ZacksRepository zacksRepository;
 
     @BeforeEach
     private void setup() {
@@ -110,9 +123,9 @@ class ZacksStockRatingDelegateImplTest {
         Assertions.assertEquals(3, row.getZacksRank());
         Assertions.assertEquals(38, row.getIndustryRank());
         Assertions.assertEquals('A', row.getValueScore());
-        Assertions.assertEquals('A', row.getGrowthScore());
-        Assertions.assertEquals('A', row.getMomentumScore());
-        Assertions.assertEquals('A', row.getVgmScore());
+        Assertions.assertEquals('B', row.getGrowthScore());
+        Assertions.assertEquals('C', row.getMomentumScore());
+        Assertions.assertEquals('D', row.getVgmScore());
     }
 
     @Test
@@ -151,5 +164,27 @@ class ZacksStockRatingDelegateImplTest {
 
         validateFullRow(parsedRows.get(0));
         validateNullRow(parsedRows.get(1));
+    }
+
+    @Test
+    void saveRowsSavesCompaniesThenZacksRows() {
+        CompanyRow companyRow = CompanyRow.builder()
+                .symbol("AA")
+                .companyName("Some name")
+                .build();
+        Set<CompanyRow> companyRowSet = Collections.singleton(companyRow);
+        ZacksRow zacksRow = ZacksRow.builder()
+                .id(new StockManagementRowId(companyRow, LocalDate.now()))
+                .build();
+        List<ZacksRow> zacksRowList = Collections.singletonList(zacksRow);
+
+
+        zacksStockRatingDelegate.saveRows(zacksRowList);
+
+        InOrder inOrder = inOrder(companyRepository, zacksRepository);
+        inOrder.verify(companyRepository).saveAll(companyRowSet);
+        inOrder.verify(zacksRepository).saveAll(zacksRowList);
+
+
     }
 }
