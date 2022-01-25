@@ -1,5 +1,8 @@
 package com.bakholdin.stock_management.model;
 
+import com.bakholdin.stock_management.model.csv_converters.CsvZacksColumn;
+import com.bakholdin.stock_management.model.csv_converters.CsvZacksDouble;
+import com.univocity.parsers.annotations.Nested;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,20 +23,28 @@ import java.util.Objects;
 @Table(name = "zacks")
 public class ZacksRow {
     @EmbeddedId
+    @Nested
     private StockManagementRowId id;
     @Column
+    @CsvZacksDouble(field = "Price")
     private Double price;
     @Column
+    @CsvZacksColumn(field = "Industry Rank")
     private Integer industryRank;
     @Column
+    @CsvZacksColumn(field = "Zacks Rank")
     private Integer zacksRank;
     @Column(length = 1)
+    @CsvZacksColumn(field = "Value Score")
     private Character valueScore;
     @Column(length = 1)
+    @CsvZacksColumn(field = "Growth Score")
     private Character growthScore;
     @Column(length = 1)
+    @CsvZacksColumn(field = "Momentum Score")
     private Character MomentumScore;
     @Column(length = 1)
+    @CsvZacksColumn(field = "VGM Score")
     private Character vgmScore;
 
     @Override

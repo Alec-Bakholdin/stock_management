@@ -1,5 +1,7 @@
 package com.bakholdin.stock_management.model;
 
+import com.bakholdin.stock_management.model.csv_converters.CsvZacksDouble;
+import com.univocity.parsers.annotations.Parsed;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -22,11 +24,16 @@ import java.util.Objects;
 public class CompanyRow implements Serializable {
     @Id
     @Column(length = 10)
+    @Parsed(field = "Symbol")
     private String symbol;
+
     @Column(length = 512)
+    @Parsed(field = "Company")
     private String companyName;
+
     @Column
-    private double latestPrice;
+    @CsvZacksDouble(field = "Price")
+    private Double latestPrice;
 
     @Override
     public boolean equals(Object o) {

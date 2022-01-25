@@ -1,5 +1,6 @@
 package com.bakholdin.stock_management.model;
 
+import com.univocity.parsers.annotations.Nested;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Embeddable
@@ -22,8 +21,8 @@ import java.util.Date;
 public class StockManagementRowId implements Serializable {
     @ManyToOne
     @JoinColumn(name="symbol")
+    @Nested
     private CompanyRow companyRow;
     @Column
-    @Temporal(TemporalType.DATE)
-    private Date date_retrieved;
+    private LocalDate date_retrieved = LocalDate.now();
 }

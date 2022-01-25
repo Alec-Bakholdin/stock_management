@@ -7,7 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.Collection;
 
 @Log4j2
 @Component
@@ -18,7 +18,7 @@ public class ScheduledTest {
     @Scheduled(initialDelay = 3000, fixedRate = 1000000)
     public void testZacks() {
         log.info("Starting zacks execution");
-        Set<ZacksRow> rows = zacksStockRatingDelegate.fetchRows();
+        Collection<ZacksRow> rows = zacksStockRatingDelegate.fetchRows();
         for(var row : rows) {
             log.info(row);
         }

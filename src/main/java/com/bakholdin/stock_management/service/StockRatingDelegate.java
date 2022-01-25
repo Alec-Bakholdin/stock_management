@@ -1,7 +1,7 @@
 package com.bakholdin.stock_management.service;
 
-import java.util.Set;
+import java.util.Collection;
 
 public interface StockRatingDelegate<T>{
-    Set<T> fetchRows();
+    Collection<T> fetchRows();
 }
