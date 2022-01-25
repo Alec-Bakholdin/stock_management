@@ -1,7 +1,5 @@
 # Stock Management Tool
 
----
-
 ### Setting up local persistent H2 database for debugging
 
 Note under application-dev.yml the section that looks as follows:
