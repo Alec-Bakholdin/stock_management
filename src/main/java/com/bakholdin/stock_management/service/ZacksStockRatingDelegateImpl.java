@@ -24,7 +24,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class ZacksStockRatingDelegateImpl implements StockRatingDelegate<ZacksRow> {
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
     private final ApplicationProperties applicationProperties;
 
     @Override
