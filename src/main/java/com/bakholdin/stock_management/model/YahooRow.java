@@ -1,4 +1,4 @@
-package com.bakholdin.stock_management.persistence;
+package com.bakholdin.stock_management.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

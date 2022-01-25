@@ -10,6 +10,3 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: create-drop
-
-stock-management:
-  test: "testing"
