@@ -3,3 +3,6 @@ stock-management:
     holdings-url: https://www.zacks.com/portfolios/tools/ajxExportExel.php
     body:
       export_data_init_tab: 2282242_update_zYjM1ADO0kjN
+    headers:
+      Content-Type: application/x-www-form-urlencoded
+      Content-Length: 48
