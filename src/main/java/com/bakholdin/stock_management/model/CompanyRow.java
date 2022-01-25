@@ -1,6 +1,5 @@
 package com.bakholdin.stock_management.model;
 
-import com.opencsv.bean.CsvBindByName;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -23,10 +22,8 @@ import java.util.Objects;
 public class CompanyRow implements Serializable {
     @Id
     @Column(length = 10)
-    @CsvBindByName(column = "Symbol")
     private String symbol;
     @Column(length = 512)
-    @CsvBindByName(column = "Company")
     private String companyName;
     @Column
     private double latestPrice;

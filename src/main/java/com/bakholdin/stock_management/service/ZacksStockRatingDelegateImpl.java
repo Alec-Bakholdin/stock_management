@@ -2,10 +2,7 @@ package com.bakholdin.stock_management.service;
 
 import com.bakholdin.stock_management.config.ApplicationProperties;
 import com.bakholdin.stock_management.model.ZacksRow;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,10 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -44,17 +37,9 @@ public class ZacksStockRatingDelegateImpl implements StockRatingDelegate<ZacksRo
                 String.class
         );
         if(!csvStr.hasBody() || csvStr.getStatusCode() != HttpStatus.OK)
-            throw new NotImplementedException("Return was not what expected");
+            throw new UnsupportedOperationException("Return was not what expected");
 
-        Reader reader = new StringReader(Objects.requireNonNull(csvStr.getBody()));
-        CsvToBean<ZacksRow> csvReader = new CsvToBeanBuilder<ZacksRow>(reader)
-                .withSeparator(',')
-                .withIgnoreLeadingWhiteSpace(true)
-                .withIgnoreEmptyLine(true)
-                .withType(ZacksRow.class)
-                //.withMappingStrategy()
-                .build();
 
-        return new HashSet<>(csvReader.parse());
+        return null;
     }
 }
