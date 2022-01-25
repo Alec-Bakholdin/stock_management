@@ -24,5 +24,5 @@ public class StockManagementRowId implements Serializable {
     @Nested
     private CompanyRow companyRow;
     @Column
-    private LocalDate date_retrieved = LocalDate.now();
+    private LocalDate dateRetrieved = LocalDate.now();
 }
