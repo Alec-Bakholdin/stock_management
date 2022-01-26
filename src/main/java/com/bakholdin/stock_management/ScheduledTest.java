@@ -1,7 +1,7 @@
 package com.bakholdin.stock_management;
 
 import com.bakholdin.stock_management.model.ZacksRow;
-import com.bakholdin.stock_management.service.ZacksStockRatingDelegateImpl;
+import com.bakholdin.stock_management.service.Zacks.ZacksStockRatingDelegateImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;

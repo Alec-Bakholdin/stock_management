@@ -13,4 +13,6 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationProperties {
     @NestedConfigurationProperty
     private ZacksProperties zacks;
+    @NestedConfigurationProperty
+    private TipRanksProperties tipRanks;
 }

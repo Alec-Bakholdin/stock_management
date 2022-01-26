@@ -1,10 +1,11 @@
-package com.bakholdin.stock_management.service;
+package com.bakholdin.stock_management.service.Zacks;
 
 import com.bakholdin.stock_management.config.ApplicationProperties;
 import com.bakholdin.stock_management.model.CompanyRow;
 import com.bakholdin.stock_management.model.ZacksRow;
 import com.bakholdin.stock_management.repository.CompanyRepository;
 import com.bakholdin.stock_management.repository.ZacksRepository;
+import com.bakholdin.stock_management.service.StockRatingDelegate;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;

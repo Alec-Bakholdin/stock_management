@@ -1,4 +1,4 @@
-package com.bakholdin.stock_management.service;
+package com.bakholdin.stock_management.service.Zacks;
 
 import com.bakholdin.stock_management.config.ApplicationProperties;
 import com.bakholdin.stock_management.config.ZacksProperties;
