@@ -1,7 +1,7 @@
 package com.bakholdin.stock_management.model;
 
-import com.bakholdin.stock_management.model.csv_converters.CsvZacksColumn;
-import com.bakholdin.stock_management.model.csv_converters.CsvZacksDouble;
+import com.bakholdin.stock_management.model.csv_annotations.CsvZacksColumn;
+import com.bakholdin.stock_management.model.csv_annotations.CsvZacksDouble;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

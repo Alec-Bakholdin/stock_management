@@ -1,8 +1,7 @@
-package com.bakholdin.stock_management.model.csv_converters;
+package com.bakholdin.stock_management.model.csv_annotations;
 
 import com.univocity.parsers.annotations.Copy;
-import com.univocity.parsers.annotations.NullString;
-import com.univocity.parsers.annotations.Parsed;
+import com.univocity.parsers.annotations.Replace;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -14,9 +13,10 @@ import java.lang.annotation.Target;
 @Inherited
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 
-@Parsed
-@NullString(nulls = "NA")
-public @interface CsvZacksColumn {
-    @Copy(to = Parsed.class)
+
+@CsvZacksColumn
+@Replace(expression = ",", replacement = "")
+public @interface CsvZacksDouble{
+    @Copy(to = CsvZacksColumn.class)
     String field() default "";
 }
