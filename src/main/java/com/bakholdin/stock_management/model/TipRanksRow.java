@@ -1,5 +1,7 @@
 package com.bakholdin.stock_management.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,6 +17,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Builder
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Entity
 @Table(name = "tip_ranks")

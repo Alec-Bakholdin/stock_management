@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static com.bakholdin.stock_management.RestTemplateTestUtils.createMockResponseEntity;
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -64,16 +64,6 @@ class ZacksStockRatingDelegateImplTest {
         when(applicationProperties.getZacks()).thenReturn(zacksProperties);
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> ResponseEntity<T> getMockResponseEntity(HttpStatus status, T body) {
-        ResponseEntity<T> responseEntity = mock(ResponseEntity.class);
-        when(responseEntity.getStatusCode()).thenReturn(status);
-        when(responseEntity.getStatusCodeValue()).thenReturn(status.value());
-        when(responseEntity.hasBody()).thenReturn(body != null);
-        when(responseEntity.getBody()).thenReturn(body);
-        return responseEntity;
-    }
-
     private <T> void mockRestTemplateExchange(ResponseEntity<T> response) {
         when(restTemplate.exchange(
                 Mockito.anyString(),
@@ -85,7 +75,7 @@ class ZacksStockRatingDelegateImplTest {
 
     @Test
     void fetchRowsThrowsExceptionOnNot200() {
-        ResponseEntity<String> failedResponse = getMockResponseEntity(HttpStatus.BAD_REQUEST, null);
+        ResponseEntity<String> failedResponse = createMockResponseEntity(HttpStatus.BAD_REQUEST, null);
         mockRestTemplateExchange(failedResponse);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> zacksStockRatingDelegate.fetchRows());
@@ -93,7 +83,7 @@ class ZacksStockRatingDelegateImplTest {
 
     @Test
     void fetchRowsThrowsExceptionOnEmptyBody() {
-        ResponseEntity<String> emptyBodyResponse = getMockResponseEntity(HttpStatus.OK, null);
+        ResponseEntity<String> emptyBodyResponse = createMockResponseEntity(HttpStatus.OK, null);
         when(emptyBodyResponse.getStatusCode()).thenReturn(HttpStatus.OK);
         when(emptyBodyResponse.getStatusCodeValue()).thenReturn(HttpStatus.OK.value());
         when(emptyBodyResponse.hasBody()).thenReturn(false);
@@ -105,7 +95,7 @@ class ZacksStockRatingDelegateImplTest {
     @Test
     void fetchRowsParsesFullRowCorrectly() {
         String responseBody = String.format("%s\n%s\n", CSV_HEADERS, CSV_FULL_ROW);
-        ResponseEntity<String> fullRowResponse = getMockResponseEntity(HttpStatus.OK, responseBody);
+        ResponseEntity<String> fullRowResponse = createMockResponseEntity(HttpStatus.OK, responseBody);
         mockRestTemplateExchange(fullRowResponse);
 
         List<ZacksRow> parsedRows = zacksStockRatingDelegate.fetchRows();
@@ -131,7 +121,7 @@ class ZacksStockRatingDelegateImplTest {
     @Test
     void fetchRowParsesNullValuesCorrectly() {
         String responseBody = String.format("%s\n%s\n", CSV_HEADERS, CSV_NULL_ROW);
-        ResponseEntity<String> fullRowResponse = getMockResponseEntity(HttpStatus.OK, responseBody);
+        ResponseEntity<String> fullRowResponse = createMockResponseEntity(HttpStatus.OK, responseBody);
         mockRestTemplateExchange(fullRowResponse);
 
         List<ZacksRow> parsedRows = zacksStockRatingDelegate.fetchRows();
@@ -157,7 +147,7 @@ class ZacksStockRatingDelegateImplTest {
     @Test
     void fetchRowsParsesMultipleRowsSimultaneously() {
         String responseBody = String.format("%s\n%s\n%s\n", CSV_HEADERS, CSV_FULL_ROW, CSV_NULL_ROW);
-        ResponseEntity<String> fullRowResponse = getMockResponseEntity(HttpStatus.OK, responseBody);
+        ResponseEntity<String> fullRowResponse = createMockResponseEntity(HttpStatus.OK, responseBody);
         mockRestTemplateExchange(fullRowResponse);
 
         List<ZacksRow> parsedRows = zacksStockRatingDelegate.fetchRows();
