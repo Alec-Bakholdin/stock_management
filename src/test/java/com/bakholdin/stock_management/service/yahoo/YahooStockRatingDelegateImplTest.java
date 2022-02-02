@@ -27,8 +27,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -50,7 +48,6 @@ class YahooStockRatingDelegateImplTest {
     private static final String YAHOO_URL_FORMAT = "this_url_{symbol}";
     private static final String YAHOO_URL_1 = YAHOO_URL_FORMAT.replace("{symbol}", TICKER_1);
     private static final String YAHOO_URL_2 = YAHOO_URL_FORMAT.replace("{symbol}", TICKER_2);
-    private static final double REQUESTS_PER_SECOND = 1.0;
 
     @Value("classpath:yahoo/AMRC.html")
     private Resource ticker1Response;
@@ -93,10 +90,9 @@ class YahooStockRatingDelegateImplTest {
     }
 
     @BeforeEach
-    void setup() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void setup() {
         YahooProperties yahooProperties = mock(YahooProperties.class);
         when(yahooProperties.getTickerQuoteUrlFormat()).thenReturn(YAHOO_URL_FORMAT);
-        when(yahooProperties.getRequestsPerSecond()).thenReturn(REQUESTS_PER_SECOND);
         when(applicationProperties.getYahoo()).thenReturn(yahooProperties);
 
         CompanyRow row1 = CompanyRow.builder().symbol(TICKER_1).build();
@@ -106,9 +102,6 @@ class YahooStockRatingDelegateImplTest {
 
         inOrderObj = inOrder(restTemplate, companyRepository, yahooRepository);
 
-        Method postConstruct = YahooStockRatingDelegateImpl.class.getDeclaredMethod("initRateLimiter");
-        postConstruct.setAccessible(true);
-        postConstruct.invoke(yahooStockRatingDelegate);
     }
 
     @Test
