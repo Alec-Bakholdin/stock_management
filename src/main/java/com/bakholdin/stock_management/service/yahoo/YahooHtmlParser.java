@@ -11,7 +11,6 @@ import org.htmlcleaner.DomSerializer;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.w3c.dom.Document;
 
 import javax.xml.xpath.XPath;
@@ -26,7 +25,7 @@ import java.util.regex.Pattern;
 public class YahooHtmlParser {
     private static final String FAIR_VALUE_XPATH = "//div[@id='quote-summary']//div[1]//div[2]//div[2]/text()";
     private static final String ESTIMATED_RETURN_XPATH = "//div[@id='quote-summary']//div[1]//div[3]//div[1]/text()";
-    private static final String PERFORMANCE_OUTLOOK_XPATH_FORMAT = "//div[@id='chrt-evts-mod']//div[3]//ul//li[%d]//a//div[1]//div[2]//svg";
+    private static final String PERFORMANCE_OUTLOOK_XPATH_FORMAT = "//div[@id='chrt-evts-mod']//div[3]//ul//li[%d]//svg";
 
     @SneakyThrows
     public YahooRow parseHtml(String symbol, String htmlStr) {
@@ -50,6 +49,9 @@ public class YahooHtmlParser {
         }
         String xpathStr = String.format(PERFORMANCE_OUTLOOK_XPATH_FORMAT, outlookIndex);
         ElementImpl svgNode = (ElementImpl) xpath.compile(xpathStr).evaluate(doc, XPathConstants.NODE);
+        if(svgNode == null) {
+            return null;
+        }
         return getPerformanceOutlookGivenClass(svgNode.getAttribute("class"));
     }
 
@@ -73,7 +75,9 @@ public class YahooHtmlParser {
         String estimatedReturnFullStr = (String) xpath.compile(ESTIMATED_RETURN_XPATH).evaluate(doc, XPathConstants.STRING);
         Pattern pattern = Pattern.compile("(-?[0-9.]+)%");
         Matcher matcher = pattern.matcher(estimatedReturnFullStr);
-        Assert.isTrue(matcher.find(), "Could not find Estimated return");
-        return Double.parseDouble(matcher.group(1));
+        if(matcher.find()) {
+            return Double.parseDouble(matcher.group(1));
+        }
+        return null;
     }
 }

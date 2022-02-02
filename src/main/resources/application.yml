@@ -11,3 +11,4 @@ stock-management:
     news-sentiment-url: https://www.tipranks.com/api/stocks/GetTickersNewsSentiments
   yahoo:
     ticker-quote-url-format: https://finance.yahoo.com/quote/{symbol}
+    requests-per-second: 0.2
