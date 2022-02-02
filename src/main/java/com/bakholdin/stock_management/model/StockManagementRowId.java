@@ -25,10 +25,4 @@ public class StockManagementRowId implements Serializable {
     private CompanyRow companyRow;
     @Column
     private LocalDate dateRetrieved = LocalDate.now();
-
-    public StockManagementRowId(String symbol) {
-        companyRow = CompanyRow.builder()
-                .symbol(symbol)
-                .build();
-    }
 }

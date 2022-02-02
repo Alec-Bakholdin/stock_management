@@ -15,6 +15,4 @@ public class ApplicationProperties {
     private ZacksProperties zacks;
     @NestedConfigurationProperty
     private TipRanksProperties tipRanks;
-    @NestedConfigurationProperty
-    private YahooProperties yahoo;
 }
