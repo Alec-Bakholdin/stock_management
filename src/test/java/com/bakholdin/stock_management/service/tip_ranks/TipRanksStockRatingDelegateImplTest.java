@@ -1,4 +1,4 @@
-package com.bakholdin.stock_management.service.TipRanks;
+package com.bakholdin.stock_management.service.tip_ranks;
 
 import com.bakholdin.stock_management.config.ApplicationProperties;
 import com.bakholdin.stock_management.config.TipRanksProperties;
@@ -7,9 +7,9 @@ import com.bakholdin.stock_management.model.StockManagementRowId;
 import com.bakholdin.stock_management.model.TipRanksRow;
 import com.bakholdin.stock_management.repository.CompanyRepository;
 import com.bakholdin.stock_management.repository.TipRanksRepository;
-import com.bakholdin.stock_management.service.TipRanks.model.AnalystConsensus;
-import com.bakholdin.stock_management.service.TipRanks.model.NewsSentiment;
-import com.bakholdin.stock_management.service.TipRanks.model.StockData;
+import com.bakholdin.stock_management.service.tip_ranks.model.AnalystConsensus;
+import com.bakholdin.stock_management.service.tip_ranks.model.NewsSentiment;
+import com.bakholdin.stock_management.service.tip_ranks.model.StockData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,9 @@ import java.util.Objects;
 
 import static com.bakholdin.stock_management.RestTemplateTestUtils.createMockResponseEntity;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -94,6 +96,16 @@ class TipRanksStockRatingDelegateImplTest {
                 Mockito.any(),
                 Mockito.<ParameterizedTypeReference<?>>any()
         );
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void saveRowsCallsTipRanksSaveAll() {
+        List<TipRanksRow> rows = mock(List.class);
+
+        tipRanksStockRatingDelegate.saveRows(rows);
+
+        verify(tipRanksRepository).saveAll(rows);
     }
 
     @Test
@@ -181,7 +193,7 @@ class TipRanksStockRatingDelegateImplTest {
 
         return NewsSentiment.builder()
                 .ticker(ticker)
-                .newsSentiment(isTickerOne ? 1.9 : 0.9)
+                .sentiment(isTickerOne ? 1.9 : 0.9)
                 .build();
     }
 }

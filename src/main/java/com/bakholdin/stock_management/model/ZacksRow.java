@@ -46,7 +46,7 @@ public class ZacksRow {
     private Character growthScore;
     @Column(length = 1)
     @CsvZacksColumn(field = "Momentum Score")
-    private Character MomentumScore;
+    private Character momentumScore;
     @Column(length = 1)
     @CsvZacksColumn(field = "VGM Score")
     private Character vgmScore;

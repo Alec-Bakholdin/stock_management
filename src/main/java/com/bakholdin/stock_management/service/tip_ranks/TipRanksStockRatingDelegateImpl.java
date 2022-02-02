@@ -1,4 +1,4 @@
-package com.bakholdin.stock_management.service.TipRanks;
+package com.bakholdin.stock_management.service.tip_ranks;
 
 import com.bakholdin.stock_management.config.ApplicationProperties;
 import com.bakholdin.stock_management.config.TipRanksProperties;
@@ -8,8 +8,8 @@ import com.bakholdin.stock_management.model.TipRanksRow;
 import com.bakholdin.stock_management.repository.CompanyRepository;
 import com.bakholdin.stock_management.repository.TipRanksRepository;
 import com.bakholdin.stock_management.service.StockRatingDelegate;
-import com.bakholdin.stock_management.service.TipRanks.model.NewsSentiment;
-import com.bakholdin.stock_management.service.TipRanks.model.StockData;
+import com.bakholdin.stock_management.service.tip_ranks.model.NewsSentiment;
+import com.bakholdin.stock_management.service.tip_ranks.model.StockData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -89,12 +89,12 @@ public class TipRanksStockRatingDelegateImpl implements StockRatingDelegate<TipR
                 .analystPriceTarget(stockData.getAnalystPriceTarget())
                 .bestAnalystPriceTarget(stockData.getBestAnalystPriceTarget())
                 .estimatedDividendYield(stockData.getEstimatedDividendYield())
-                .newsSentiment(newsSentiment.getNewsSentiment())
+                .newsSentiment(newsSentiment.getSentiment())
                 .build();
     }
 
     @Override
     public void saveRows(Collection<TipRanksRow> rows) {
-
+        tipRanksRepository.saveAll(rows);
     }
 }

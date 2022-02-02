@@ -1,4 +1,4 @@
-package com.bakholdin.stock_management.service.TipRanks.model;
+package com.bakholdin.stock_management.service.tip_ranks.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

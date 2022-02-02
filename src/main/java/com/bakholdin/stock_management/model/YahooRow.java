@@ -1,5 +1,8 @@
 package com.bakholdin.stock_management.model;
 
+import com.univocity.parsers.annotations.Parsed;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,7 +17,9 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@Builder
 @ToString
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Entity
 @Table(name = "yahoo")
@@ -22,13 +27,14 @@ public class YahooRow {
     @EmbeddedId
     private StockManagementRowId stockManagementRowId;
     @Column(length = 10)
-    private String shortTerm;
+    private PerformanceOutlook shortTerm;
     @Column(length = 10)
-    private String midTerm;
+    private PerformanceOutlook midTerm;
     @Column(length = 10)
-    private String longTerm;
+    private PerformanceOutlook longTerm;
     @Column
     private Double estimatedReturn;
+    @Parsed
     @Column(length = 50)
     private String fairValue;
 

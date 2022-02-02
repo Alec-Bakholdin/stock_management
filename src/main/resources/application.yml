@@ -9,3 +9,5 @@ stock-management:
   tip-ranks:
     stock-data-url: https://www.tipranks.com/api/portfolio/getPortfolioHoldingStockData/
     news-sentiment-url: https://www.tipranks.com/api/stocks/GetTickersNewsSentiments
+  yahoo:
+    ticker-quote-url-format: https://finance.yahoo.com/quote/{symbol}
