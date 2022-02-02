@@ -87,11 +87,6 @@
             <artifactId>xercesImpl</artifactId>
             <version>2.12.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>28.2-android</version>
-        </dependency>
     </dependencies>
 
     <build>

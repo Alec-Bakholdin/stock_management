@@ -27,15 +27,15 @@ import java.util.Objects;
 @Table(name = "companies")
 public class CompanyRow implements Serializable {
     @Id
-    @Column(name = "symbol", length = 10, nullable = false)
+    @Column(length = 10, nullable = false)
     @CsvZacksColumn(field = "Symbol")
     private String symbol;
 
-    @Column(name = "company_name", length = 512)
+    @Column(length = 512)
     @CsvZacksColumn(field = "Company")
     private String companyName;
 
-    @Column(name = "latest_price")
+    @Column
     @CsvZacksDouble(field = "Price")
     private Double latestPrice;
 
