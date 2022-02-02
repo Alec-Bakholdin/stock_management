@@ -43,8 +43,8 @@ public class CompanyRow implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CompanyRow companyRow = (CompanyRow) o;
-        return symbol != null && Objects.equals(symbol, companyRow.symbol);
+        CompanyRow that = (CompanyRow) o;
+        return symbol != null && Objects.equals(symbol, that.symbol);
     }
 
     @Override
