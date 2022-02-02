@@ -38,12 +38,14 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class TipRanksStockRatingDelegateImplTest {
+    private static final String STOCK_DATA_URL = "stock_data_url";
+    private static final String STOCK_DATA_QUERY_PARAM = "stock_query_param";
+    private static final String NEWS_SENTIMENT_URL = "news_sentiment_url";
+    private static final String NEWS_SENTIMENT_QUERY_PARAM = "news_sentiment_query_param";
     private static final String TICKER_1 = "AA";
     private static final String TICKER_2 = "AAPL";
-    private static final String STOCK_DATA_URL = "stock_data_url";
-    private static final String NEWS_SENTIMENT_URL = "news_sentiment_url";
-    private final static String FULL_STOCK_DATA_URL = String.format("%s?tickers=%s,%s", STOCK_DATA_URL, TICKER_1, TICKER_2);
-    private final static String FULL_NEWS_SENTIMENT_URL = String.format("%s?tickers=%s,%s", NEWS_SENTIMENT_URL, TICKER_1, TICKER_2);
+    private final static String FULL_STOCK_DATA_URL = String.format("%s?%s=%s,%s", STOCK_DATA_URL, STOCK_DATA_QUERY_PARAM, TICKER_1, TICKER_2);
+    private final static String FULL_NEWS_SENTIMENT_URL = String.format("%s?%s=%s,%s", NEWS_SENTIMENT_URL, NEWS_SENTIMENT_QUERY_PARAM, TICKER_1, TICKER_2);
 
 
     @Spy
@@ -68,7 +70,9 @@ class TipRanksStockRatingDelegateImplTest {
     void setup() {
         when(applicationProperties.getTipRanks()).thenReturn(tipRanksProperties);
         when(tipRanksProperties.getStockDataUrl()).thenReturn(STOCK_DATA_URL);
+        when(tipRanksProperties.getStockDataTickersQueryParam()).thenReturn(STOCK_DATA_QUERY_PARAM);
         when(tipRanksProperties.getNewsSentimentUrl()).thenReturn(NEWS_SENTIMENT_URL);
+        when(tipRanksProperties.getNewsSentimentTickersQueryParam()).thenReturn(NEWS_SENTIMENT_QUERY_PARAM);
 
         CompanyRow row1 = CompanyRow.builder().symbol(TICKER_1).build();
         CompanyRow row2 = CompanyRow.builder().symbol(TICKER_2).build();

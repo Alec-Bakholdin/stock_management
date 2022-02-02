@@ -8,5 +8,7 @@ import lombok.Setter;
 @Setter
 public class TipRanksProperties {
     @NonNull private String stockDataUrl;
+    @NonNull private String stockDataTickersQueryParam;
     @NonNull private String newsSentimentUrl;
+    @NonNull private String newsSentimentTickersQueryParam;
 }

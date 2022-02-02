@@ -8,4 +8,6 @@ stock-management:
       Content-Length: 48
   tip-ranks:
     stock-data-url: https://www.tipranks.com/api/portfolio/getPortfolioHoldingStockData/
+    stock-data-tickers-query-param: tickers
     news-sentiment-url: https://www.tipranks.com/api/stocks/GetTickersNewsSentiments
+    news-sentiment-tickers-query-param: tickers
