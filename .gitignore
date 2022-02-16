@@ -34,3 +34,6 @@ build/
 
 ### local database files for testing ###
 *.db
+
+### credential files ###
+application-secret.yml
