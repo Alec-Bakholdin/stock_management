@@ -12,6 +12,8 @@ import org.hibernate.Hibernate;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.util.Objects;
 
@@ -27,10 +29,13 @@ public class YahooRow {
     @EmbeddedId
     private StockManagementRowId stockManagementRowId;
     @Column(length = 10)
+    @Enumerated(EnumType.STRING)
     private PerformanceOutlook shortTerm;
     @Column(length = 10)
+    @Enumerated(EnumType.STRING)
     private PerformanceOutlook midTerm;
     @Column(length = 10)
+    @Enumerated(EnumType.STRING)
     private PerformanceOutlook longTerm;
     @Column
     private Double estimatedReturn;
