@@ -1,4 +1,3 @@
-
 spring:
   datasource:
     url: jdbc:h2:./data/stock_data;AUTO_SERVER=TRUE
