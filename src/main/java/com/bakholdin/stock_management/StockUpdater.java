@@ -30,13 +30,13 @@ public class StockUpdater {
         log.info("Fetching TipRanks Data...");
         Collection<TipRanksRow> rows2 = tipRanksStockRatingDelegate.fetchRows();
         log.info("Saving TipRanks data");
-        tipRanksStockRatingDelegate.saveRows(rows2);
+        //tipRanksStockRatingDelegate.saveRows(rows2);
         log.info("Saved TipRanks Data");
 
         log.info("Fetching Yahoo Data...");
-        Collection<YahooRow> yahooRows = yahooRowStockRatingDelegate.fetchRows();
+        //Collection<YahooRow> yahooRows = yahooRowStockRatingDelegate.fetchRows();
         log.info("Saving Yahoo Data...");
-        yahooRowStockRatingDelegate.saveRows(yahooRows);
+        //yahooRowStockRatingDelegate.saveRows(yahooRows);
         log.info("Done");
     }
 }

@@ -8,5 +8,4 @@ import lombok.Setter;
 @Setter
 public class TipRanksProperties {
     @NonNull private String stockDataUrl;
-    @NonNull private String newsSentimentUrl;
 }

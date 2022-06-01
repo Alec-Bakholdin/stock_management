@@ -7,8 +7,7 @@ stock-management:
       Content-Type: application/x-www-form-urlencoded
       Content-Length: 48
   tip-ranks:
-    stock-data-url: https://www.tipranks.com/api/portfolio/getPortfolioHoldingStockData/
-    news-sentiment-url: https://www.tipranks.com/api/stocks/GetTickersNewsSentiments
+    stock-data-url: https://www.tipranks.com/api/assets
   yahoo:
     ticker-quote-url-format: https://finance.yahoo.com/quote/{symbol}
     requests-per-second: 0.2

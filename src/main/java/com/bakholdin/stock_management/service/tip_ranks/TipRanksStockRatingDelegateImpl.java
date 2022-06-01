@@ -2,14 +2,13 @@ package com.bakholdin.stock_management.service.tip_ranks;
 
 import com.bakholdin.stock_management.config.ApplicationProperties;
 import com.bakholdin.stock_management.config.TipRanksProperties;
+import com.bakholdin.stock_management.dto.TipRanksDto;
+import com.bakholdin.stock_management.mapper.TipRanksMapper;
 import com.bakholdin.stock_management.model.CompanyRow;
-import com.bakholdin.stock_management.model.StockManagementRowId;
 import com.bakholdin.stock_management.model.TipRanksRow;
 import com.bakholdin.stock_management.repository.CompanyRepository;
 import com.bakholdin.stock_management.repository.TipRanksRepository;
 import com.bakholdin.stock_management.service.StockRatingDelegate;
-import com.bakholdin.stock_management.service.tip_ranks.model.NewsSentiment;
-import com.bakholdin.stock_management.service.tip_ranks.model.StockData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -21,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -32,28 +30,27 @@ public class TipRanksStockRatingDelegateImpl implements StockRatingDelegate<TipR
     private final RestTemplate restTemplate;
     private final CompanyRepository companyRepository;
     private final TipRanksRepository tipRanksRepository;
+    private final TipRanksMapper tipRanksMapper;
 
     @Override
     public List<TipRanksRow> fetchRows() {
         TipRanksProperties tipRanksProperties = applicationProperties.getTipRanks();
 
         String tickersStr = getTickersStr();
-        List<StockData> stockDataList = getDataByTicker(tipRanksProperties.getStockDataUrl(), tickersStr, new ParameterizedTypeReference<>() {});
-        Map<String, StockData> stockDataMap = stockDataList.stream()
-                .collect(Collectors.toMap(StockData::getTicker, val -> val));
-        List<NewsSentiment> newsSentimentList = getDataByTicker(tipRanksProperties.getNewsSentimentUrl(), tickersStr, new ParameterizedTypeReference<>() {});
-        Map<String, NewsSentiment> newsSentimentMap = newsSentimentList.stream()
-                .collect(Collectors.toMap(NewsSentiment::getTicker, val -> val));
+        List<TipRanksDto> tipRanksDtos = getDataByTicker(
+                tipRanksProperties.getStockDataUrl(),
+                tickersStr,
+                new ParameterizedTypeReference<>() {});
 
-        return stockDataMap.keySet().stream()
-                .filter(newsSentimentMap::containsKey)
-                .map(ticker -> mergeTipRanksRowData(stockDataMap.get(ticker), newsSentimentMap.get(ticker)))
+        return tipRanksDtos.stream()
+                .map(tipRanksMapper::fromDto)
                 .collect(Collectors.toList());
     }
 
     private String getTickersStr() {
         List<CompanyRow> companyRows = companyRepository.findAll();
         return companyRows.stream()
+                .filter(c -> !"SZKMY".equals(c.getSymbol())) // SZKMY is not in TipRanks and causes a null pointer exception for them
                 .map(CompanyRow::getSymbol)
                 .collect(Collectors.joining(","));
     }
@@ -63,7 +60,6 @@ public class TipRanksStockRatingDelegateImpl implements StockRatingDelegate<TipR
         ResponseEntity<List<T>> dataResponse = get(fullStockDataUrl, type);
         return Objects.requireNonNull(dataResponse.getBody());
     }
-
 
     private <T> ResponseEntity<T> get(String url, ParameterizedTypeReference<T> type) {
         ResponseEntity<T> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, type);
@@ -75,22 +71,6 @@ public class TipRanksStockRatingDelegateImpl implements StockRatingDelegate<TipR
         HttpStatus statusCode = responseEntity.getStatusCode();
         String statusErrorResponse = String.format("RestTemplate call to %s failed with %d %s", url, statusCode.value(), statusCode);
         Assert.isTrue(responseEntity.getStatusCode() == HttpStatus.OK, statusErrorResponse);
-    }
-
-    private TipRanksRow mergeTipRanksRowData(StockData stockData, NewsSentiment newsSentiment) {
-        CompanyRow row = CompanyRow.builder().symbol(stockData.getTicker()).build();
-        StockManagementRowId rowId = StockManagementRowId.builder()
-                .companyRow(row)
-                .build();
-        return TipRanksRow.builder()
-                .stockManagementRowId(rowId)
-                .analystConsensus(stockData.getAnalystConsensus().getConsensus())
-                .bestAnalystConsensus(stockData.getBestAnalystConsensus().getConsensus())
-                .analystPriceTarget(stockData.getAnalystPriceTarget())
-                .bestAnalystPriceTarget(stockData.getBestAnalystPriceTarget())
-                .estimatedDividendYield(stockData.getEstimatedDividendYield())
-                .newsSentiment(newsSentiment.getSentiment())
-                .build();
     }
 
     @Override
