@@ -1,6 +1,6 @@
 package com.bakholdin.stock_management.service.zacks;
 
-import com.bakholdin.stock_management.config.ApplicationProperties;
+import com.bakholdin.stock_management.config.properties.ApplicationProperties;
 import com.bakholdin.stock_management.model.CompanyRow;
 import com.bakholdin.stock_management.model.ZacksRow;
 import com.bakholdin.stock_management.repository.CompanyRepository;

@@ -1,4 +1,4 @@
-package com.bakholdin.stock_management.config;
+package com.bakholdin.stock_management.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;

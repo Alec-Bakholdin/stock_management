@@ -8,6 +8,10 @@ stock-management:
       Content-Length: 48
   tip-ranks:
     stock-data-url: https://www.tipranks.com/api/assets
+    excluded-tickers:
+      - SOXL
+      - SZKMY
+      - SNPR
   yahoo:
     ticker-quote-url-format: https://finance.yahoo.com/quote/{symbol}
     requests-per-second: 0.2

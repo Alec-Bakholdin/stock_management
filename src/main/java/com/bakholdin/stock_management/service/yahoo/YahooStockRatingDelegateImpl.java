@@ -1,6 +1,6 @@
 package com.bakholdin.stock_management.service.yahoo;
 
-import com.bakholdin.stock_management.config.ApplicationProperties;
+import com.bakholdin.stock_management.config.properties.ApplicationProperties;
 import com.bakholdin.stock_management.model.CompanyRow;
 import com.bakholdin.stock_management.model.YahooRow;
 import com.bakholdin.stock_management.repository.CompanyRepository;

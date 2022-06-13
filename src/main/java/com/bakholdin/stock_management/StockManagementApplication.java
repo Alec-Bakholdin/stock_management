@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @EnableScheduling
@@ -23,6 +24,14 @@ public class StockManagementApplication {
 
     @Bean
     public WebClient getWebClient() {
-        return WebClient.create();
+        return WebClient.builder()
+                .exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(clientCodecConfigurer -> clientCodecConfigurer
+                                .defaultCodecs()
+                                .maxInMemorySize(1024 * 1024 * 10)
+                        )
+                        .build()
+                )
+                .build();
     }
 }
