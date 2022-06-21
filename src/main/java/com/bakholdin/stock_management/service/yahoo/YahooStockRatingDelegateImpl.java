@@ -8,6 +8,7 @@ import com.bakholdin.stock_management.repository.YahooRepository;
 import com.bakholdin.stock_management.service.StockRatingDelegate;
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,13 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("UnstableApiUsage")
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class YahooStockRatingDelegateImpl implements StockRatingDelegate<YahooRow> {
@@ -40,9 +43,24 @@ public class YahooStockRatingDelegateImpl implements StockRatingDelegate<YahooRo
     @Override
     public List<YahooRow> fetchRows() {
         List<String> symbolList = getTargetSymbols();
-        return symbolList.stream()
-                .map(this::getYahooRowFromSymbol)
-                .collect(Collectors.toList());
+        List<YahooRow> yahooRows = new ArrayList<>();
+
+        List<String> processedSymbolList = new ArrayList<>();
+        int logGranularity = 10; // number of rows to process before logging.
+
+        for(int i = 0; i < symbolList.size(); i++) {
+            String symbol = symbolList.get(i);
+            YahooRow yahooRow = getYahooRowFromSymbol(symbol);
+            yahooRows.add(yahooRow);
+            processedSymbolList.add(symbol);
+
+            if(processedSymbolList.size() >= logGranularity || i >= symbolList.size() - 1) {
+                String processedSymbolStr = String.join(", ", processedSymbolList);
+                log.info("Processed {} for a total of {}/{} symbols", processedSymbolStr, i + 1, symbolList.size());
+                processedSymbolList.clear();
+            }
+        }
+        return yahooRows;
     }
 
     private YahooRow getYahooRowFromSymbol(String symbol) {

@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -20,16 +21,26 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class StockManagementRowId implements Serializable {
     @ManyToOne
-    @JoinColumn(name="symbol")
+    @JoinColumn(name = "symbol")
     @Nested
+    @Builder.ObtainVia(method = "createCompanyRow")
     private CompanyRow companyRow;
     @Column
     @Builder.Default
     private LocalDate dateRetrieved = LocalDate.now();
 
-    public StockManagementRowId(String symbol) {
-        companyRow = CompanyRow.builder()
-                .symbol(symbol)
-                .build();
+    @Transient
+    private String symbol;
+
+    private CompanyRow createCompanyRow() {
+        if (companyRow != null) {
+            return companyRow;
+        } else if (symbol != null) {
+            return CompanyRow.builder()
+                    .symbol(symbol)
+                    .build();
+        }
+
+        return null;
     }
 }

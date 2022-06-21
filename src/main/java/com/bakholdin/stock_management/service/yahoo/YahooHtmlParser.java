@@ -1,5 +1,6 @@
 package com.bakholdin.stock_management.service.yahoo;
 
+import com.bakholdin.stock_management.model.CompanyRow;
 import com.bakholdin.stock_management.model.PerformanceOutlook;
 import com.bakholdin.stock_management.model.StockManagementRowId;
 import com.bakholdin.stock_management.model.YahooRow;
@@ -33,8 +34,14 @@ public class YahooHtmlParser {
         Document doc = new DomSerializer(new CleanerProperties()).createDOM(tagNode);
         XPath xpath = XPathFactory.newInstance().newXPath();
 
+        CompanyRow companyRow = CompanyRow.builder()
+                .symbol(symbol)
+                .build();
+        StockManagementRowId rowId = StockManagementRowId.builder()
+                .symbol(symbol)
+                .build();
         return YahooRow.builder()
-                .stockManagementRowId(new StockManagementRowId(symbol))
+                .stockManagementRowId(rowId)
                 .shortTerm(getPerformanceOutlook(xpath, doc, 1))
                 .midTerm(getPerformanceOutlook(xpath, doc, 2))
                 .longTerm(getPerformanceOutlook(xpath, doc, 3))

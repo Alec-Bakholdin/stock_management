@@ -6,10 +6,14 @@ import com.bakholdin.stock_management.model.ZacksRow;
 import com.bakholdin.stock_management.service.StockRatingDelegate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 @Log4j2
@@ -19,13 +23,31 @@ public class StockUpdater {
     private final StockRatingDelegate<ZacksRow> zacksStockRatingDelegate;
     private final StockRatingDelegate<TipRanksRow> tipRanksStockRatingDelegate;
     private final StockRatingDelegate<YahooRow> yahooRowStockRatingDelegate;
+    private final Environment environment;
 
-    @Scheduled(initialDelay = 1000, fixedRate = 1000000)
+    @EventListener(ApplicationReadyEvent.class)
+    public void updateOnStartupIfDev() {
+        if(profileIsActive("dev")) {
+            updateStocks();
+        }
+    }
+
+
     @Schedules({
             @Scheduled(cron = "0 13,17 * * * *"),
             @Scheduled(cron = "30 3 * * * *"),
     })
-    public void UpdateStocks() {
+    public void updateOnScheduleIfProd() {
+        if(profileIsActive("prod")) {
+            updateStocks();
+        }
+    }
+
+    private boolean profileIsActive(String profileStr) {
+        return Arrays.asList(environment.getActiveProfiles()).contains(profileStr);
+    }
+
+    private void updateStocks() {
         fetchAndSaveZacksData();
         fetchAndSaveTipRanksData();
         fetchAndSaveYahooData();
