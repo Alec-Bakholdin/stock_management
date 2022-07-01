@@ -38,7 +38,7 @@ public class YahooHtmlParser {
                 .symbol(symbol)
                 .build();
         StockManagementRowId rowId = StockManagementRowId.builder()
-                .symbol(symbol)
+                .companyRow(companyRow)
                 .build();
         return YahooRow.builder()
                 .stockManagementRowId(rowId)

@@ -17,4 +17,6 @@ public class ApplicationProperties {
     private TipRanksProperties tipRanks;
     @NestedConfigurationProperty
     private YahooProperties yahoo;
+    @NestedConfigurationProperty
+    private SendGridProperties sendGridProperties;
 }

@@ -32,7 +32,7 @@ public class StockManagementRowId implements Serializable {
     @Transient
     private String symbol;
 
-    private CompanyRow createCompanyRow() {
+    public CompanyRow createCompanyRow() {
         if (companyRow != null) {
             return companyRow;
         } else if (symbol != null) {

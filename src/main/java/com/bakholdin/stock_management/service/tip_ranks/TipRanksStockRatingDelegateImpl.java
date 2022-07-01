@@ -12,6 +12,7 @@ import com.bakholdin.stock_management.repository.TipRanksRepository;
 import com.bakholdin.stock_management.service.StockRatingDelegate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -32,6 +33,7 @@ public class TipRanksStockRatingDelegateImpl implements StockRatingDelegate<TipR
     private final WebClient webClient;
 
     @Override
+    @Transactional
     public List<TipRanksRow> fetchRows() {
         TipRanksProperties tipRanksProperties = applicationProperties.getTipRanks();
 
@@ -71,6 +73,7 @@ public class TipRanksStockRatingDelegateImpl implements StockRatingDelegate<TipR
     }
 
     @Override
+    @Transactional
     public void saveRows(Collection<TipRanksRow> rows) {
         tipRanksRepository.saveAll(rows);
     }

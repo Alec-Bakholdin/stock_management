@@ -15,3 +15,7 @@ stock-management:
   yahoo:
     ticker-quote-url-format: https://finance.yahoo.com/quote/{symbol}
     requests-per-second: 0.2
+  send-grid-properties:
+    error-email-list:
+      - alec@bakholdin.com
+      - alecbakholdin@gmail.com

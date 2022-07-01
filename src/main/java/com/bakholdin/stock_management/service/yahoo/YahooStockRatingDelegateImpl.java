@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
@@ -48,6 +49,7 @@ public class YahooStockRatingDelegateImpl implements StockRatingDelegate<YahooRo
         List<String> processedSymbolList = new ArrayList<>();
         int logGranularity = 10; // number of rows to process before logging.
 
+        //for(int i = 0; i < 10; i++) {
         for(int i = 0; i < symbolList.size(); i++) {
             String symbol = symbolList.get(i);
             YahooRow yahooRow = getYahooRowFromSymbol(symbol);
@@ -84,6 +86,7 @@ public class YahooStockRatingDelegateImpl implements StockRatingDelegate<YahooRo
     }
 
     @Override
+    @Transactional
     public void saveRows(Collection<YahooRow> rows) {
         yahooRepository.saveAll(rows);
     }

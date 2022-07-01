@@ -16,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -43,6 +44,7 @@ public class ZacksStockRatingDelegateImpl implements StockRatingDelegate<ZacksRo
     }
 
     @Override
+    @Transactional
     public void saveRows(Collection<ZacksRow> zacksRows) {
         Set<CompanyRow> companyRows = zacksRows.stream()
                 .map(row -> row.getId().getCompanyRow())
